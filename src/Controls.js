@@ -31,7 +31,6 @@ const useStyles = makeStyles({
         left: 0,
         right: 0,
         bottom: 0,
-        //background:"rgba(0,0,0,0.6)",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -40,7 +39,6 @@ const useStyles = makeStyles({
 
     controlIcons: {
         color: "lightgrey",
-        //width: "15px",
         "&:hover": {
             transform: "scale(1.1)",
             color: "white",

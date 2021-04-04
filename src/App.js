@@ -154,7 +154,7 @@ function App() {
 
 
   return (
-    <div style={{width:"97%", paddingLeft: "2%"}}>
+    <div style={{width:"100%", position: "absolute", top: "50%", transform: "translateY(-50%)", display: "flex", justifyContent: "center"}}>
       <Container maxWidth="xl" disableGutters={true}>
         <div ref={playerContainerRef} className={classes.playerWrapper} onMouseMove={handleMouseMove}>
           <ReactPlayer
