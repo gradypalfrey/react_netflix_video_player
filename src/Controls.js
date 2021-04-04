@@ -81,7 +81,9 @@ export default forwardRef(({onPlayPause,
                             muted,
                             onVolumeSeekDown,
                             volume,
-                            onVolumeChange}, ref) => {
+                            onVolumeChange,
+                            playbackRate,
+                            onPlaybackRateChange}, ref) => {
 
     const classes = useStyles();
 
@@ -99,7 +101,7 @@ export default forwardRef(({onPlayPause,
 
     return (
         <div className={classes.controlsWrapper} ref={ref}>
-            <Grid container direction="row" alignItems="center" style={{ padding: 16 }}>
+            <Grid container direction="row" justify="space-between" alignItems="center" style={{ padding: 16 }}>
                 <Grid item>
                     <Button style={{ color: "white" }} startIcon={<ArrowBack />}>
                         <Typography>Back to Browse</Typography>
@@ -156,8 +158,11 @@ export default forwardRef(({onPlayPause,
                         </IconButton>
 
                         <IconButton onClick={handlePopover} className={classes.controlIcons}>
-                            <VolumeUpIcon 
-                            />
+                            { muted ? (
+                                <VolumeMuteIcon />
+                            ) : (
+                                <VolumeUpIcon />
+                            )}
                         </IconButton>
                         <Popover
                             id={id}
@@ -176,13 +181,13 @@ export default forwardRef(({onPlayPause,
                             <Slider
                                 color="red"
                                 orientation="vertical"
-                                style={{height: "120px", width: "20px", backgroundColor: "darkgrey", color:"red" }}
+                                style={{height: "120px", width: "8px", backgroundColor: "darkgrey", color:"red" }}
 
                                 min={0}
                                 max={100}
                                 value={volume * 100}
                                 onChange={onVolumeChange}
-                                onMouseDown={onSeekMouseDown}
+                                // onMouseDown={onSeekMouseDown}
                                 onChangeCommitted={onVolumeSeekDown}
                                 />
                         </Popover>
@@ -234,7 +239,7 @@ export default forwardRef(({onPlayPause,
                         <SubtitlesIcon />
                     </IconButton>
 
-                    <IconButton id="Popover1" type="button" className={classes.controlIcons}>
+                    <IconButton onClick={onPlaybackRateChange} className={classes.controlIcons}>
                         <SpeedIcon />
                     </IconButton>
 

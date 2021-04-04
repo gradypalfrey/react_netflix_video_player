@@ -45,6 +45,7 @@ const format = (sec) => {
 };
 
 let count = 0;
+let rate = 1.0;
 
 
 function App() {
@@ -58,7 +59,7 @@ function App() {
     seeking: false,
   });
 
-  const { playing, muted, played, seeking, volume } = state;
+  const { playing, muted, played, seeking, volume, playbackRate } = state;
 
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
@@ -127,6 +128,18 @@ function App() {
     count = 0;
   };
 
+  const handlePlaybackRate = () => {
+    if (playbackRate >= 2.0) {
+      rate = 0.5;
+    } else {
+      rate += 0.5;
+    }
+    console.log(playbackRate);
+    setState({...state, playbackRate: rate});
+  }
+
+
+
   const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : '00:00';
   const duration = playerRef.current ? playerRef.current.getDuration() : '00:00';
 
@@ -149,6 +162,7 @@ function App() {
             muted={muted}
             ref={playerRef}
             onProgress={handleProgress}
+            playbackRate={playbackRate}
           />
           <Controls
             ref={controlsRef}
@@ -157,6 +171,7 @@ function App() {
             onRewind={handleRewind}
             onFastForward={handleFastForward}
             muted={muted}
+            onMute={handleMute}
             onVolumeChange={handleVolumeChange}
             onVolumeSeekDown={handleVolumeSeekDown}
             onToggleFullScreen={toggleFullScreen}
@@ -166,6 +181,9 @@ function App() {
             onSeekMouseUp={handleOnSeekMouseUp}
             elapsedTime={elapsedTime}
             totalDuration={totalDuration}
+            volume={volume}
+            playbackRate={playbackRate}
+            onPlaybackRateChange={handlePlaybackRate}
           />
         </div>
       </Container>
