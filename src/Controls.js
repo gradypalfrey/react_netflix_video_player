@@ -12,8 +12,7 @@ import PauseIcon from '@material-ui/icons/Pause';
 import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
-import VolumeDownIcon from '@material-ui/icons/VolumeDown';
-import VolumeMuteIcon from '@material-ui/icons/VolumeMute';
+import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
@@ -83,7 +82,8 @@ export default forwardRef(({onPlayPause,
                             volume,
                             onVolumeChange,
                             playbackRate,
-                            onPlaybackRateChange}, ref) => {
+                            onPlaybackRateChange,
+                            onUnmute}, ref) => {
 
     const classes = useStyles();
 
@@ -113,10 +113,6 @@ export default forwardRef(({onPlayPause,
 
 
             <Grid container direction="row" alignItems="center" justify="center">
-
-                {/* <IconButton className={classes.controlIcons} aria-label="reqind">
-                    <PlayArrowIcon fontSize="inherit" />
-                </IconButton> */}
 
             </Grid>
 
@@ -159,12 +155,13 @@ export default forwardRef(({onPlayPause,
 
                         <IconButton onClick={handlePopover} className={classes.controlIcons}>
                             { muted ? (
-                                <VolumeMuteIcon />
+                                <VolumeOffIcon onClick={onUnmute} />
                             ) : (
                                 <VolumeUpIcon />
                             )}
                         </IconButton>
                         <Popover
+                            
                             id={id}
                             open={open}
                             anchorEl={anchorEl}
@@ -187,7 +184,6 @@ export default forwardRef(({onPlayPause,
                                 max={100}
                                 value={volume * 100}
                                 onChange={onVolumeChange}
-                                // onMouseDown={onSeekMouseDown}
                                 onChangeCommitted={onVolumeSeekDown}
                                 />
                         </Popover>
@@ -195,32 +191,8 @@ export default forwardRef(({onPlayPause,
                         <Button variant="text" style={{color: "white"}}>
                             <Typography>National Geographic S1 E1</Typography>
                         </Button>
-
-                        {/*
-                <IconButton className={classes.controlIcons}>
-                <HelpOutlineIcon />
-                </IconButton>
-
-                <IconButton className={classes.controlIcons}>
-                <SkipNextIcon />
-                </IconButton>
-
-                <IconButton className={classes.controlIcons}>
-                <DynamicFeedIcon />
-                </IconButton>
-
-                <IconButton className={classes.controlIcons}>
-                <SubtitlesIcon />
-                </IconButton>
-
-                <IconButton className={classes.controlIcons}>
-                <SpeedIcon />
-                </IconButton>
-                */}
-
                     </Grid>
                 </Grid>
-
 
                 <Grid item>
                     <IconButton className={classes.controlIcons}>
