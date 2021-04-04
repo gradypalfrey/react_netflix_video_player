@@ -44,6 +44,8 @@ const format = (sec) => {
   return `${minutes}:${seconds}`;
 };
 
+let count = 0;
+
 
 function App() {
   const classes = useStyles();
@@ -56,10 +58,12 @@ function App() {
     seeking: false,
   });
 
-  const { playing, muted, played, seeking } = state;
+  const { playing, muted, played, seeking, volume } = state;
 
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
+
+  const controlsRef = useRef(null);
 
   const handlePlayPause = () => {
     setState({ ...state, playing: !state.playing });
@@ -78,6 +82,16 @@ function App() {
   };
 
   const handleProgress = (changeState) => {
+
+    if (count > 2) {
+        controlsRef.current.style.visibility = "hidden";
+        count = 0;
+    }
+
+    if (controlsRef.current.style.visibility == 'visible') {
+        count = count + 1;
+    }
+
     if (!state.seeking) {
       setState({ ...state, ...changeState });
     }
@@ -96,31 +110,55 @@ function App() {
     playerRef.current.seekTo(newValue / 100);
   };
 
+  const handleVolumeSeekDown = (e, newValue) => {
+    setState({...state, seeking: false, volume: parseFloat(newValue / 100)});
+  };
+
+  const handleVolumeChange= (e, newValue) => {
+    setState({...state, volume: parseFloat(newValue / 100), muted: newValue === 0 ? true : false});
+  };
+
+  const handleMute = () => {
+    setState({...state, muted: !state.muted });
+  };
+
+  const handleMouseMove = () => {
+    controlsRef.current.style.visibility = "visible";
+    count = 0;
+  };
+
   const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : '00:00';
   const duration = playerRef.current ? playerRef.current.getDuration() : '00:00';
 
   const elapsedTime = format(currentTime);
   const totalDuration = format(duration);
 
+  
+
+
   return (
-    <div style={{width:"88%", paddingLeft: "6%", backgroundColor: "black"}}>
+    <div style={{width:"88%", paddingLeft: "6%"}}>
       <Container maxWidth="xl" disableGutters={true}>
-        <div ref={playerContainerRef} className={classes.playerWrapper}>
+        <div ref={playerContainerRef} className={classes.playerWrapper} onMouseMove={handleMouseMove}>
           <ReactPlayer
             width={"100%"}
             height="100%"
-            url="https://filesamples.com/samples/video/mp4/sample_1920x1080.mp4"
+            url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4"
             playing={playing}
+            volume={volume}
             muted={muted}
             ref={playerRef}
             onProgress={handleProgress}
           />
           <Controls
+            ref={controlsRef}
             onPlayPause={handlePlayPause}
             playing={playing}
             onRewind={handleRewind}
             onFastForward={handleFastForward}
             muted={muted}
+            onVolumeChange={handleVolumeChange}
+            onVolumeSeekDown={handleVolumeSeekDown}
             onToggleFullScreen={toggleFullScreen}
             played={played}
             onSeek={handleSeekChange}

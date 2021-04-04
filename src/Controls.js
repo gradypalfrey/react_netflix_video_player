@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import { duration, makeStyles, withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import { Button, Icon, Typography } from '@material-ui/core';
@@ -12,6 +12,8 @@ import PauseIcon from '@material-ui/icons/Pause';
 import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import VolumeDownIcon from '@material-ui/icons/VolumeDown';
+import VolumeMuteIcon from '@material-ui/icons/VolumeMute';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
@@ -64,7 +66,22 @@ const RedSlider = withStyles({
 
 })(Slider);
 
-export default ({onPlayPause, playing, onRewind, onFastForward, onToggleFullScreen, played, onSeek, onSeekMouseDown, onSeekMouseUp, elapsedTime, totalDuration}) => {
+export default forwardRef(({onPlayPause,
+                            playing,
+                            onRewind,
+                            onFastForward,
+                            onToggleFullScreen,
+                            played,
+                            onSeek,
+                            onSeekMouseDown,
+                            onSeekMouseUp,
+                            elapsedTime,
+                            totalDuration, 
+                            onMute,
+                            muted,
+                            onVolumeSeekDown,
+                            volume,
+                            onVolumeChange}, ref) => {
 
     const classes = useStyles();
 
@@ -81,7 +98,7 @@ export default ({onPlayPause, playing, onRewind, onFastForward, onToggleFullScre
     const id = open ? 'speed-popover' : undefined;
 
     return (
-        <div className={classes.controlsWrapper}>
+        <div className={classes.controlsWrapper} ref={ref}>
             <Grid container direction="row" alignItems="center" style={{ padding: 16 }}>
                 <Grid item>
                     <Button style={{ color: "white" }} startIcon={<ArrowBack />}>
@@ -139,7 +156,8 @@ export default ({onPlayPause, playing, onRewind, onFastForward, onToggleFullScre
                         </IconButton>
 
                         <IconButton onClick={handlePopover} className={classes.controlIcons}>
-                            <VolumeUpIcon />
+                            <VolumeUpIcon 
+                            />
                         </IconButton>
                         <Popover
                             id={id}
@@ -155,7 +173,18 @@ export default ({onPlayPause, playing, onRewind, onFastForward, onToggleFullScre
                                 horizontal: 'center',
                             }}
                         >
-                            <Slider color="red" orientation="vertical" style={{height: "100px", backgroundColor: "darkgrey", color:"red" }} width={100} min={0} max={100} />
+                            <Slider
+                                color="red"
+                                orientation="vertical"
+                                style={{height: "120px", width: "20px", backgroundColor: "darkgrey", color:"red" }}
+
+                                min={0}
+                                max={100}
+                                value={volume * 100}
+                                onChange={onVolumeChange}
+                                onMouseDown={onSeekMouseDown}
+                                onChangeCommitted={onVolumeSeekDown}
+                                />
                         </Popover>
 
                         <Button variant="text" style={{color: "white"}}>
@@ -216,4 +245,4 @@ export default ({onPlayPause, playing, onRewind, onFastForward, onToggleFullScre
             </Grid>
         </div>
     )
-};
+});
