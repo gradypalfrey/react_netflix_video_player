@@ -1,7 +1,7 @@
 import React, {forwardRef} from 'react';
-import { duration, makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import { Button, Icon, Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
 import IconButton from '@material-ui/core/IconButton';
@@ -98,6 +98,7 @@ export default forwardRef(({onPlayPause,
     const id = open ? 'speed-popover' : undefined;
 
     return (
+        
         <div className={classes.controlsWrapper} ref={ref}>
             <Grid container direction="row" justify="space-between" alignItems="center" style={{ padding: 16 }}>
                 <Grid item>
@@ -176,7 +177,7 @@ export default forwardRef(({onPlayPause,
                             <Slider
                                 color="red"
                                 orientation="vertical"
-                                style={{height: "120px", width: "8px", backgroundColor: "darkgrey", color:"red" }}
+                                style={{height: "120px", width: "8px", backgroundColor: "darkgrey", color:"red", zIndex: "4"}}
 
                                 min={0}
                                 max={100}
@@ -220,4 +221,4 @@ export default forwardRef(({onPlayPause,
             </Grid>
         </div>
     )
-});
+}); 
